@@ -70,17 +70,17 @@ class Planner:
         walls = track.walls.astype(int)
         active0 = track.active.astype(int)
         buttons = track.buttons.astype(int)
-        colors = track.colors.astype(int)
+        wall_colors = track.wall_colors.astype(int)
         rows, cols = walls.shape
 
-        wall_color_values = np.unique(colors[walls.astype(bool)])
+        wall_color_values = np.unique(wall_colors[walls.astype(bool)])
         color_to_bit = {
             int(color): 1 << i
             for i, color in enumerate(sorted(map(int, wall_color_values.tolist())))
         }
         color_bits = np.zeros_like(walls, dtype=int)
         for color, bit in color_to_bit.items():
-            color_bits[colors == color] = bit
+            color_bits[wall_colors == color] = bit
 
         start: State = (loc[0], loc[1], 0)
         target = track.target
